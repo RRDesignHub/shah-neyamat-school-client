@@ -4,6 +4,7 @@ import { useAxiosSec } from "../../../Hooks/useAxiosSec";
 import Swal from "sweetalert2";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
+import { Loading } from "../../../components/Shared/Loading";
 const printStyles = `
   @media print {
     /* Hide everything on the page */
@@ -257,7 +258,8 @@ const handlePrint = () => {
           </div>
 
           {/* Table */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          {
+            isLoading ? <Loading /> : <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="p-4 bg-gray-50 border-b flex justify-between items-center">
               <h3 className="font-semibold text-gray-700 flex items-center gap-2">
                 <FaHistory /> সাম্প্রতিক লেনদেন
@@ -302,6 +304,7 @@ const handlePrint = () => {
               </table>
             </div>
           </div>
+          }
 
           </div>
       </div>
