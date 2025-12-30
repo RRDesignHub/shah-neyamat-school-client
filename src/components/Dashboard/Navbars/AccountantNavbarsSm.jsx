@@ -67,7 +67,7 @@ const AccountantNavbars = ({ openCloseMenu }) => {
       </NavLink>
       {/* items sell */}
       <NavLink
-        to="/dashboard/goods-sell"
+        to="/dashboard/add-exam-fee"
         className={({ isActive }) =>
           isActive
             ? "flex items-center ps-2 gap-2 py-2 bg-[#166534] text-white "
