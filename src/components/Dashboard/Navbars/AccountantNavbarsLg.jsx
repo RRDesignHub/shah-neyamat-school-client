@@ -3,6 +3,7 @@ import { ImCalculator } from "react-icons/im";
 import { TbCoinTakaFilled } from "react-icons/tb";
 import { MdDashboard,  MdAddChart } from "react-icons/md";
 import { FaSitemap } from "react-icons/fa";
+import { HiDocumentReport } from "react-icons/hi";
 const AccountantNavbarLg = () => {
   const location = useLocation();
   return (
@@ -31,6 +32,19 @@ const AccountantNavbarLg = () => {
       >
         <ImCalculator className="w-5 h-5" />
         দৈনিক হিসাব
+      </NavLink>
+
+      {/* হিসাব বিবরণী / রিপোর্ট */}
+      <NavLink
+        to="/dashboard/ledger-statement"
+        className={({ isActive }) =>
+          isActive
+            ? "flex items-center gap-3 px-4 py-2 bg-[#166534] text-white rounded-lg"
+            : "flex items-center gap-3 px-4 py-2 hover:bg-[#166534] hover:text-green-950 transition rounded-lg"
+        }
+      >
+        <HiDocumentReport className="w-5 h-5" />
+        হিসাব বিবরণী
       </NavLink>
 
       {/* বেতন ও ফি গ্রহণ */}

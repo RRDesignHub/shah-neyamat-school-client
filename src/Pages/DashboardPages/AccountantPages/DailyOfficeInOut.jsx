@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Loading } from "../../../components/Shared/Loading";
+import { Helmet } from "react-helmet";
 const printStyles = `
   @media print {
     /* Hide everything on the page */
@@ -144,8 +145,11 @@ const handlePrint = () => {
   };
   return (
       <>
-    <div className="p-4 md:p-8 bg-green-50 min-h-screen font-serif">
+       <Helmet>
+              <title>SN-DailyLedger</title>
+            </Helmet>
         <style>{printStyles}</style>
+    <div className="p-4 md:p-8 bg-green-50 min-h-screen font-serif">
       <h2 className="text-center text-2xl md:text-4xl font-bold text-green-900 mb-6 border-b-2 border-green-200 pb-2">
         দৈনিক আয়-ব্যয় হিসাব
       </h2>
@@ -191,7 +195,7 @@ const handlePrint = () => {
               >
                 <option value="">বাছাই করুন</option>
                 {categories[watchType]?.map((cat, index) => (
-                  <option key={index} value={cat}>
+                  <option key={cat} value={cat}>
                     {cat}
                   </option>
                 ))}
@@ -260,16 +264,16 @@ const handlePrint = () => {
           {/* Table */}
           {
             isLoading ? <Loading /> : <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="p-4 bg-gray-50 border-b flex justify-between items-center">
+            <div className="p-4 bg-gray-50 border-b flex flex-col md:flex-row justify-between items-center">
               <h3 className="font-semibold text-gray-700 flex items-center gap-2">
-                <FaHistory /> সাম্প্রতিক লেনদেন
+                <FaHistory /> আজকের লেনদেন
               <span className="text-sm text-gray-500">({format(new Date(today), "MMMM dd, yyyy")})</span>
               </h3>
               <button
                            onClick={handlePrint}
                               className="btn btn-md bg-green-600 text-green-50 hover:bg-green-500"
                             >
-                              আজকের রিপোর্ট প্রিন্ট করুন <FaFilePdf />
+                              প্রিন্ট করুন <FaFilePdf />
                             </button>
             </div>
             <div className="overflow-x-auto">
@@ -288,8 +292,8 @@ const handlePrint = () => {
                   <tr>
                     <td className="p-4">{logs?.category}</td>
                     <td className="p-4">{logs?.description}</td>
-                    <td className="p-4 text-right text-green-700">৳ {logs?.type === "income" ? logs?.amount : 0}</td>
-                    <td className="p-4 text-right text-red-600 font-bold">৳ {logs?.type === "expense" ? logs?.amount : 0}</td>
+                    <td className="p-4 sm:text-[8px] md:text-sm text-right text-green-700">৳ {logs?.type === "income" ? logs?.amount : "--"}</td>
+                    <td className="p-4 sm:text-[8px] md:text-sm text-right text-red-600 font-bold">৳ {logs?.type === "expense" ? logs?.amount : "--"}</td>
                   </tr>
                 ))
               ) : (

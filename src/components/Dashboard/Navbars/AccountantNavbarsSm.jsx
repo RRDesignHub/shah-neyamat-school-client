@@ -3,6 +3,7 @@ import { ImCalculator } from "react-icons/im";
 import { TbCoinTakaFilled } from "react-icons/tb";
 import { MdDashboard, MdAddChart} from "react-icons/md";
 import { FaSitemap } from "react-icons/fa";
+import { HiDocumentReport } from "react-icons/hi";
 const AccountantNavbars = ({ openCloseMenu }) => {
   const location = useLocation();
   return (
@@ -36,6 +37,22 @@ const AccountantNavbars = ({ openCloseMenu }) => {
         </span>
       </NavLink>
       
+       {/* হিসাব বিবরণী / রিপোর্ট */}
+            <NavLink
+              to="/dashboard/ledger-statement"
+            className={({ isActive }) =>
+          isActive
+            ? "flex items-center ps-2 gap-2 py-2 bg-[#166534] text-white "
+            : "flex items-center ps-2 gap-2 py-2 hover:bg-[#166534] hover:text-white transition "
+        }
+            >
+              <HiDocumentReport className="w-4 h-4" />
+        <span className="text-xs ">
+          {openCloseMenu ? "হিসাব বিবরণী" : ""}
+        </span>
+              
+              
+            </NavLink>
 
       {/* fees receive */}
       <NavLink

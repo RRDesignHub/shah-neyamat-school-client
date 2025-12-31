@@ -53,7 +53,7 @@ export default function TabularResultPDF({ resultData }) {
                   {item.totalGPA?.toFixed(2)}
                 </Text>
                 <Text style={[styles.cell, { flex: 1 }]}>{item.totalLG}</Text>
-                <Text style={[styles.cell, { flex: 1 }]}>{item.position}</Text>
+                <Text style={[styles.cell, { flex: 1 }]}>{item.totalLG === "F" ? "--" : item.position}</Text>
               </View>
             ))}
         </View>

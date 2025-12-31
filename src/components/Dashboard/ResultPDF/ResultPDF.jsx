@@ -93,7 +93,7 @@ export default function ResultPDF({result}) {
                 </View>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Position:</Text>
-                  <Text style={styles.infoValue}>{result?.position}</Text>
+                  <Text style={styles.infoValue}>{result?.totalLG === "F" ? "--" : result?.position}</Text>
                 </View>
               </View>
             </View>

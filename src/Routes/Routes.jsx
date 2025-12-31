@@ -40,6 +40,7 @@ import AddAllStudents from "../Pages/DashboardPages/AccountantPages/AddAllStuden
 import Management from "../Pages/Management";
 import SpecialTask from "../Pages/DashboardPages/AdminPages/SpecialTask";
 import DailyOfficeInOut from "../Pages/DashboardPages/AccountantPages/DailyOfficeInOut";
+import OfficeLedgerStatement from "../Pages/DashboardPages/AccountantPages/OfficeLedgerStatement";
 
 const router = createBrowserRouter(
   [
@@ -156,7 +157,11 @@ const router = createBrowserRouter(
           path: "daily-inout",
           element: <AccountantRoute><DailyOfficeInOut /></AccountantRoute>
         },
-         {
+        {
+          path: "ledger-statement",
+          element: <AccountantRoute><OfficeLedgerStatement /></AccountantRoute>
+        }, 
+        {
           path: "students-fees",
           element: <AccountantRoute><AllStudentsFees /></AccountantRoute>
         },
