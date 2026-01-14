@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { FaSearch, FaMoneyBillWave, FaFilePdf } from "react-icons/fa";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
+import FeeUpdateModal from "../../../components/Dashboard/PopUps/FeeUpdateModal";
 const AllStudentsFees = () => {
   const axiosSec = useAxiosSec();
 
@@ -13,8 +14,14 @@ const AllStudentsFees = () => {
   const [sessionFilter, setSessionFilter] = useState("");
   const [studentID, setStudentID] = useState("");
 
+  // states for update fee or add previous due popups
+  const [isFeeModalOpen, setIsFeeModalOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+
   const { data: dues = [], isLoading } = useQuery({
+    enabled: Boolean(classFilter || sessionFilter || studentID),
     queryKey: ["student-monthly-dues", classFilter, sessionFilter, studentID],
+
     queryFn: async () => {
       const res = await axiosSec.get("/fees/due-summary", {
         params: {
@@ -27,6 +34,7 @@ const AllStudentsFees = () => {
     },
   });
 
+  // fetching the overall due data from db func
   const handleFilter = async (e) => {
     e.preventDefault(); // Prevents page reload
 
@@ -40,6 +48,12 @@ const AllStudentsFees = () => {
     setClassFilter(selectedClass);
     setSessionFilter(selectedSession);
     setStudentID(studentID);
+  };
+
+  // update fee and add previous dues func
+  const handleFeeEdit = (student) => {
+    setSelectedStudent(student);
+    setIsFeeModalOpen(true);
   };
   return (
     <>
@@ -61,7 +75,6 @@ const AllStudentsFees = () => {
               defaultValue={""}
               name="className"
               className="select select-bordered w-full"
-              required
             >
               <option value="">শ্রেণী নির্বাচন করুন</option>
               {[
@@ -107,7 +120,7 @@ const AllStudentsFees = () => {
             </select>
           </div>
 
-          {/* choose exam */}
+          {/* student ID */}
           <div className="form-control col-span-12 md:col-span-3">
             <label className="label">
               <span className="label-text max-sm:text-lg">
@@ -167,7 +180,9 @@ const AllStudentsFees = () => {
                         {/* Name & ID */}
                         <td className="py-2 px-4">
                           <div className="font-bold">{stu.name}</div>
-                          <div className="text-xs text-gray-500">{stu._id}</div>
+                          <div className="text-xs text-gray-500">
+                            {stu.studentID}
+                          </div>
                         </td>
 
                         {/* monthly fees */}
@@ -180,19 +195,21 @@ const AllStudentsFees = () => {
                         {/* Due Months Count */}
                         <td className="py-2 px-4 text-center">
                           <span className="badge badge-ghost font-mono">
-                            {stu.dueMonthsCount} মাস
+                            {stu.dueMonths.length} মাস
                           </span>
                         </td>
 
                         {/* Total Due Amount */}
                         <td className="py-2 px-4 text-center text-red-600 font-bold">
-                          {stu.totalDueAmount}৳
+                          {stu.totalDue}৳
                         </td>
 
                         {/* Session */}
                         <td className="py-2 px-4 text-center">
                           {stu?.lastPaidAt ? (
-                            format(new Date(stu.lastPaidAt), "MMM dd, yyyy")
+                            <span className="text-gray-400 text-xs">
+                              {stu?.lastPaidAt}
+                            </span>
                           ) : (
                             <span className="text-gray-400 text-xs">
                               কোন রেকর্ড নেই
@@ -218,7 +235,7 @@ const AllStudentsFees = () => {
                           </Link>
 
                           <button
-                            onClick={() => openAdjustModal(stu)}
+                            onClick={() => handleFeeEdit(stu)}
                             className="btn btn-xs btn-outline btn-success text-[10px]"
                           >
                             বেতন পরিবর্তন
@@ -229,12 +246,18 @@ const AllStudentsFees = () => {
               </tbody>
             </table>
           ) : (
-            <p className="text-center text-gray-700">
-              কোন বকেয়া তথ্য পাওয়া যায়নি
+            <p className="text-center text-gray-700 py-3">
+              শ্রেণী, রোল অথবা studentID দিয়ে সার্চ করুন
             </p>
           )}
         </div>
       </div>
+
+      <FeeUpdateModal
+        isOpen={isFeeModalOpen}
+        onClose={() => setIsFeeModalOpen(false)}
+        student={selectedStudent}
+      />
     </>
   );
 };

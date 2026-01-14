@@ -56,7 +56,6 @@ export const AddStudent = () => {
         ...data,
         studentID: `SN-${data.session}${data.birthRegNo.toString().slice(-4)}`,
         image: photoURL || "https://i.ibb.co.com/V0jk4tCT/images.png",
-        user: user.email,
         classRoll: data.classRoll.toString(),
         birthRegNo: parseInt(data.birthRegNo),
         mobileNo: parseInt(data.mobileNo),
