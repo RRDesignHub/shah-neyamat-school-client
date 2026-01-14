@@ -171,7 +171,10 @@ const AllStudentsFees = () => {
                       (a, b) => parseInt(a.classRoll) - parseInt(b.classRoll)
                     )
                     .map((stu) => (
-                      <tr key={stu._id} className="border-b hover:bg-gray-50">
+                      <tr
+                        key={stu.studentID}
+                        className="border-b hover:bg-gray-50"
+                      >
                         {/* Roll */}
                         <td className="py-2 px-4 text-center font-semibold">
                           {stu.classRoll}

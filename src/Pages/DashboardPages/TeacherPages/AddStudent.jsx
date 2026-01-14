@@ -6,14 +6,7 @@ import imageUpload from "../../../Api/Utils";
 import useAuth from "../../../Hooks/useAuth";
 export const AddStudent = () => {
   const axiosSecure = useAxiosSec();
-  const { user } = useAuth();
-  const [session, setSession] = useState(new Date().getFullYear().toString());
-  const [className, setClassName] = useState("Play");
-  const [bloodGroup, setBloodGroup] = useState("A+");
-  const [gender, setGender] = useState("Male");
-  const [religion, setReligion] = useState("Islam");
   const [imageFile, setImageFile] = useState(null);
-  const [birthDate, setBirthDate] = useState(new Date());
   const [largeFile, setLargeFile] = useState(null);
   const { register, handleSubmit, reset, control } = useForm({
     defaultValues: {
@@ -31,6 +24,8 @@ export const AddStudent = () => {
       gender: "Male",
       religion: "Islam",
       mobileNo: "",
+      admissionFee: 700,
+      previousDue: 0,
     },
   });
   useEffect(() => {
@@ -57,8 +52,9 @@ export const AddStudent = () => {
         studentID: `SN-${data.session}${data.birthRegNo.toString().slice(-4)}`,
         image: photoURL || "https://i.ibb.co.com/V0jk4tCT/images.png",
         classRoll: data.classRoll.toString(),
-        birthRegNo: parseInt(data.birthRegNo),
         mobileNo: parseInt(data.mobileNo),
+        admissionFee: parseInt(data?.admissionFee),
+        previousDue: parseInt(data?.previousDue),
       };
 
       const { data: response } = await axiosSecure.post(
@@ -79,7 +75,7 @@ export const AddStudent = () => {
         Swal.fire({
           position: "center",
           icon: "success",
-          title: `সফলভাবে ${data.studentName} এর তথ্য পরিবর্তন করা হয়েছে!!!`,
+          title: `সফলভাবে ${data.studentName} এর তথ্য Add করা হয়েছে!!!`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -370,6 +366,49 @@ export const AddStudent = () => {
                 placeholder="+880123-4567890"
                 className="input input-bordered"
               />
+            </div>
+
+            {/* fees data */}
+            {/* Admission Fee */}
+            <div className="form-control col-span-12 md:col-span-6">
+              <label className="label">
+                <span className="label-text max-sm:text-xs">
+                  ভর্তি ফি (Admission Fee):
+                </span>
+              </label>
+              <input
+                type="number"
+                min={0}
+                {...register("admissionFee")}
+                placeholder="ভর্তি ফি লিখুন"
+                className="input input-bordered"
+              />
+              <label className="label">
+                <span className="label-text-alt text-[10px] text-gray-500">
+                  নোট: শিক্ষার্থীর ভর্তি ফি। না থাকলে খালি রাখুন।
+                </span>
+              </label>
+            </div>
+
+            {/* Previous Due */}
+            <div className="form-control col-span-12 md:col-span-6">
+              <label className="label">
+                <span className="label-text max-sm:text-xs">
+                  পূর্ববর্তী বকেয়া (Previous Due):
+                </span>
+              </label>
+              <input
+                type="number"
+                min={0}
+                {...register("previousDue")}
+                placeholder="পূর্ববর্তী বকেয়া লিখুন (যদি থাকে)..."
+                className="input input-bordered"
+              />
+              <label className="label">
+                <span className="label-text-alt text-[10px] text-gray-500">
+                  নোট: পূর্বের কোনো বকেয়া থাকলে এখানে লিখুন।
+                </span>
+              </label>
             </div>
           </div>
 

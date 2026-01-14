@@ -13,6 +13,7 @@ export default function UpdateStudent() {
   const navigate = useNavigate();
   const [imageFile, setImageFile] = useState(null);
   const [imgErr, setImgErr] = useState("");
+
   const { register, handleSubmit, reset, control } = useForm({
     defaultValues: async () => {
       const res = await axiosSecure.get(`/student/${id}`);
@@ -25,43 +26,56 @@ export default function UpdateStudent() {
   });
 
   useEffect(() => {
-      if (imageFile && imageFile?.size >= 40000) {
-        return setImgErr("ছবি অবশ্যই 40kb এর সমান বা ছোট হতে হবে!");
-      } else {
-        setImgErr(null);
-      }
-    }, [imageFile]);
+    if (imageFile && imageFile?.size >= 40000) {
+      return setImgErr("ছবি অবশ্যই 40kb এর সমান বা ছোট হতে হবে!");
+    } else {
+      setImgErr(null);
+    }
+  }, [imageFile]);
 
   const onSubmit = async (data) => {
-    if (imageFile && imageFile?.size >= 40000) {
-      return;
-    }
+    if (imageFile && imageFile?.size >= 40000) return;
 
     try {
-      // upload image if any
+      let photoURL = data.image;
       if (imageFile) {
-        const photoURL = await imageUpload(imageFile);
-        data.image = photoURL;
+        photoURL = await imageUpload(imageFile);
       }
+
+      // studentID এবং birthRegNo বাদে বাকি সব আপডেট হবে
+      const { studentID, birthRegNo, _id, ...restOfData } = data;
+
+      const finalData = {
+        ...restOfData,
+        image: photoURL,
+        classRoll: data.classRoll.toString(),
+        mobileNo: data.mobileNo.toString(),
+        // ডাটা টাইপ ঠিক করা হচ্ছে
+        admissionFee: Number(data.admissionFee || 0),
+        previousDue: Number(data.previousDue || 0),
+      };
 
       const { data: response } = await axiosSecure.patch(
         `/update-student/${id}`,
-        data
+        finalData
       );
 
-      if (response.modifiedCount) {
+      if (response.modifiedCount > 0) {
         Swal.fire({
-          position: "center",
           icon: "success",
-          title: `সফলভাবে ${data.studentName} এর তথ্য পরিবর্তন করা হয়েছে!!!`,
+          title: "তথ্য আপডেট সফল হয়েছে!",
           showConfirmButton: false,
           timer: 1500,
         });
-        reset(); // reset form
         navigate("/dashboard/students");
       }
     } catch (err) {
       console.error("Update Error:", err);
+      Swal.fire({
+        icon: "error",
+        title: "আপডেট ব্যর্থ হয়েছে",
+        text: err.response?.data?.message || "সার্ভারে সমস্যা হয়েছে",
+      });
     }
   };
 
@@ -148,18 +162,18 @@ export default function UpdateStudent() {
               />
             </div>
 
-            {/* Birth Registration No */}
+            {/* Birth Registration No (Read Only) */}
             <div className="form-control col-span-12 md:col-span-8">
               <label className="label">
                 <span className="label-text max-sm:text-xs">
-                  জন্ম নিবন্ধন নম্বর:
+                  জন্ম নিবন্ধন নম্বর: (অপরিবর্তনযোগ্য)
                 </span>
               </label>
               <input
-                type="number"
-                {...register("birthRegNo", { required: true })}
-                placeholder="Type birth registration no..."
-                className="input input-bordered"
+                type="text"
+                {...register("birthRegNo")}
+                readOnly
+                className="input input-bordered bg-gray-100 cursor-not-allowed"
               />
             </div>
 
@@ -310,7 +324,9 @@ export default function UpdateStudent() {
                 name="imageFile"
                 onChange={(e) => setImageFile(e.target.files[0])}
                 accept="image/*"
-                className={`select mb-2 px-4 py-2 select-bordered ${imgErr ? "border-red-500"  : ""}`}
+                className={`select mb-2 px-4 py-2 select-bordered ${
+                  imgErr ? "border-red-500" : ""
+                }`}
               />
 
               <small className="text-red-500">{imgErr && imgErr}</small>
@@ -331,6 +347,36 @@ export default function UpdateStudent() {
                 className="input input-bordered"
               />
             </div>
+          </div>
+
+          {/* Admission Fee - Editable */}
+          <div className="form-control col-span-12 md:col-span-6">
+            <label className="label">
+              <span className="label-text max-sm:text-xs">
+                ভর্তি ফি (Admission Fee):
+              </span>
+            </label>
+            <input
+              type="number"
+              min={0}
+              {...register("admissionFee")}
+              className="input input-bordered focus:border-green-500"
+            />
+          </div>
+
+          {/* Previous Due - Editable */}
+          <div className="form-control col-span-12 md:col-span-6">
+            <label className="label">
+              <span className="label-text max-sm:text-xs">
+                পূর্ববর্তী বকেয়া (Previous Due):
+              </span>
+            </label>
+            <input
+              type="number"
+              min={0}
+              {...register("previousDue")}
+              className="input input-bordered focus:border-green-500"
+            />
           </div>
 
           <div className="form-control w-fit ms-auto mt-6">
