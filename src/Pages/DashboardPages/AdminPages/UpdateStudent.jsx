@@ -14,7 +14,7 @@ export default function UpdateStudent() {
   const [imageFile, setImageFile] = useState(null);
   const [imgErr, setImgErr] = useState("");
 
-  const { register, handleSubmit, reset, control } = useForm({
+  const { register, handleSubmit, control } = useForm({
     defaultValues: async () => {
       const res = await axiosSecure.get(`/student/${id}`);
       const student = res.data;
@@ -43,16 +43,16 @@ export default function UpdateStudent() {
       }
 
       // studentID এবং birthRegNo বাদে বাকি সব আপডেট হবে
-      const { studentID, birthRegNo, _id, ...restOfData } = data;
+      const { birthRegNo, ...restOfData } = data;
 
       const finalData = {
         ...restOfData,
         image: photoURL,
         classRoll: data.classRoll.toString(),
         mobileNo: data.mobileNo.toString(),
-        // ডাটা টাইপ ঠিক করা হচ্ছে
         admissionFee: Number(data.admissionFee || 0),
         previousDue: Number(data.previousDue || 0),
+        monthlyFee: Number(data?.monthlyFee || 350),
       };
 
       const { data: response } = await axiosSecure.patch(
@@ -141,12 +141,19 @@ export default function UpdateStudent() {
               <label className="label">
                 <span className="label-text max-sm:text-xs">শাখা:</span>
               </label>
-              <input
-                type="text"
+              <select
                 {...register("sectionName")}
-                placeholder="Type branch name..."
-                className="input input-bordered"
-              />
+                className="select select-bordered"
+              >
+                <option value="" disabled>
+                  শাখা নির্বাচন করুন...
+                </option>
+                {["A", "B", "C", "D", "E"].map((section) => (
+                  <option key={section} value={section}>
+                    {section}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Group */}
@@ -154,12 +161,19 @@ export default function UpdateStudent() {
               <label className="label">
                 <span className="label-text max-sm:text-xs">বিভাগ:</span>
               </label>
-              <input
-                type="text"
+              <select
                 {...register("groupName")}
-                placeholder="Type department..."
-                className="input input-bordered"
-              />
+                className="select select-bordered"
+              >
+                <option value="" disabled>
+                  বিভাগ নির্বাচন করুন...
+                </option>
+                {["Science", "Commerce", "Arts", "Vocational"].map((group) => (
+                  <option key={group} value={group}>
+                    {group}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Birth Registration No (Read Only) */}
@@ -347,36 +361,68 @@ export default function UpdateStudent() {
                 className="input input-bordered"
               />
             </div>
-          </div>
 
-          {/* Admission Fee - Editable */}
-          <div className="form-control col-span-12 md:col-span-6">
-            <label className="label">
-              <span className="label-text max-sm:text-xs">
-                ভর্তি ফি (Admission Fee):
-              </span>
-            </label>
-            <input
-              type="number"
-              min={0}
-              {...register("admissionFee")}
-              className="input input-bordered focus:border-green-500"
-            />
-          </div>
+            {/* Admission Fee - Editable */}
+            <div className="form-control col-span-12 md:col-span-3">
+              <label className="label">
+                <span className="label-text max-sm:text-xs">পুন:ভর্তি ফি:</span>
+              </label>
+              <input
+                type="number"
+                min={0}
+                {...register("admissionFee")}
+                className="input input-bordered focus:border-green-500"
+              />
+            </div>
 
-          {/* Previous Due - Editable */}
-          <div className="form-control col-span-12 md:col-span-6">
-            <label className="label">
-              <span className="label-text max-sm:text-xs">
-                পূর্ববর্তী বকেয়া (Previous Due):
-              </span>
-            </label>
-            <input
-              type="number"
-              min={0}
-              {...register("previousDue")}
-              className="input input-bordered focus:border-green-500"
-            />
+            {/* Monthly Fee - Editable */}
+            <div className="form-control col-span-12 md:col-span-3">
+              <label className="label">
+                <span className="label-text max-sm:text-xs">মাসিক বেতন:</span>
+              </label>
+              <input
+                type="number"
+                min={0}
+                {...register("monthlyFee")}
+                className="input input-bordered focus:border-green-500"
+              />
+            </div>
+
+            {/* Previous Due - Editable */}
+            <div className="form-control col-span-12 md:col-span-3">
+              <label className="label">
+                <span className="label-text max-sm:text-xs">
+                  পূর্ববর্তী বকেয়া (Previous Due):
+                </span>
+              </label>
+              <input
+                type="number"
+                min={0}
+                {...register("previousDue")}
+                className="input input-bordered focus:border-green-500"
+              />
+            </div>
+
+            {/* status change */}
+
+            <div className="form-control col-span-6 md:col-span-3">
+              <label className="label">
+                <span className="label-text max-sm:text-xs">Status:</span>
+              </label>
+              <select
+                {...register("status")}
+                className="select select-bordered"
+              >
+                <option value="" disabled>
+                  Choose status...
+                </option>
+                {["Active", "Deactive"].map((group) => (
+                  <option key={group} value={group}>
+                    {group}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="form-control w-fit ms-auto mt-6">

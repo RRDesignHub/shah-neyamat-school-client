@@ -27,7 +27,13 @@ export default function AllStudents() {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["students", filterByClass, session, filterBySection, filterStudentsID],
+    queryKey: [
+      "students",
+      filterByClass,
+      session,
+      filterBySection,
+      filterStudentsID,
+    ],
     queryFn: async () => {
       const { data } = await axiosSecure.get(
         `/students?session=${session}&className=${filterByClass}&sectionName=${filterBySection}&studentID=${filterStudentsID}`
@@ -39,7 +45,6 @@ export default function AllStudents() {
       }
       return data || [];
     },
-    enabled,
   });
 
   // filter all students from db
@@ -54,7 +59,6 @@ export default function AllStudents() {
     setSession(session);
     setFilterBySection(sectionName);
     setFilterStudentsID(studentID);
-    setUnabled(true);
     refetch();
   };
 
@@ -176,7 +180,6 @@ export default function AllStudents() {
               defaultValue={""}
               name="sectionName"
               className="select select-bordered w-full"
-              
             >
               <option value="" disabled>
                 শাখা নির্বাচন করুন...
@@ -188,8 +191,6 @@ export default function AllStudents() {
               ))}
             </select>
           </div>
-
-          
 
           {/* students ID */}
           <div className="form-control col-span-12 md:col-span-2">

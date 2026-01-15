@@ -66,7 +66,7 @@ export const AddStudent = () => {
         Swal.fire({
           position: "center",
           icon: "info",
-          title: `${response.message}`,
+          title: `${response?.message}`,
           showConfirmButton: false,
           timer: 1500,
         });

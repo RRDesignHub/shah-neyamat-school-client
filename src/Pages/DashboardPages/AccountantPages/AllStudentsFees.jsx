@@ -18,7 +18,11 @@ const AllStudentsFees = () => {
   const [isFeeModalOpen, setIsFeeModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
-  const { data: dues = [], isLoading } = useQuery({
+  const {
+    data: dues = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     enabled: Boolean(classFilter || sessionFilter || studentID),
     queryKey: ["student-monthly-dues", classFilter, sessionFilter, studentID],
 
@@ -260,6 +264,7 @@ const AllStudentsFees = () => {
         isOpen={isFeeModalOpen}
         onClose={() => setIsFeeModalOpen(false)}
         student={selectedStudent}
+        refetch={refetch}
       />
     </>
   );

@@ -6,7 +6,7 @@ import useAuth from "./useAuth";
 const axiosSecure = axios.create({
   baseURL: "https://snkh-school-server-side.vercel.app",
 });
-// /http://localhost:5000 https://snkh-school-server-side.vercel.app
+// http://localhost:5000 https://snkh-school-server-side.vercel.app
 export const useAxiosSec = () => {
   const navigate = useNavigate();
   const { logoutUser } = useAuth();

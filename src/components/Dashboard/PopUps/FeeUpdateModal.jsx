@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useAxiosSec } from "../../../Hooks/useAxiosSec";
+import Swal from "sweetalert2";
 
-const FeeUpdateModal = ({ isOpen, onClose, student }) => {
+const FeeUpdateModal = ({ isOpen, onClose, student, refetch }) => {
+  const axiosSec = useAxiosSec;
   const [monthlyFee, setMonthlyFee] = useState("");
-  const [previousDue, setPreviousDue] = useState("");
   const [note, setNote] = useState("");
 
   useEffect(() => {
@@ -15,19 +17,40 @@ const FeeUpdateModal = ({ isOpen, onClose, student }) => {
 
   if (!isOpen || !student) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const payload = {
-      studentId: student._id,
-      newMonthlyFee: Number(monthlyFee),
-      previousDueAmount: Number(previousDue || 0),
-      note,
-    };
+    try {
+      const payload = {
+        studentID: student.studentID,
+        newMonthlyFee: Number(monthlyFee),
+        note,
+      };
 
-    console.log("Fee Update Payload:", payload);
+      const { data } = await axiosSec.patch(`/update-fee`, payload);
 
-    // API call will be added next step
+      if (data.success) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "মাসিক বেতন আপডেট করা হয়েছে!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        // ১. মডাল বন্ধ করা
+        onClose();
+
+        refetch();
+      }
+    } catch (err) {
+      console.error("Fee Update Error:", err);
+      Swal.fire({
+        icon: "error",
+        title: "দুঃখিত...",
+        text: err.response?.data?.message || "বেতন পরিবর্তন করা সম্ভব হয়নি!",
+      });
+    }
     onClose();
   };
 
@@ -67,21 +90,9 @@ const FeeUpdateModal = ({ isOpen, onClose, student }) => {
             />
           </div>
 
-          {/* Previous Due */}
-          <div>
-            <label className="label-text">পূর্বের বকেয়া (৳)</label>
-            <input
-              type="number"
-              className="input input-bordered w-full"
-              placeholder="যদি থাকে"
-              value={previousDue}
-              onChange={(e) => setPreviousDue(e.target.value)}
-            />
-          </div>
-
           {/* Note */}
           <div>
-            <label className="label-text">নোট (ঐচ্ছিক)</label>
+            <label className="label-text">পরিবর্তনের কারণ (ঐচ্ছিক)</label>
             <textarea
               className="textarea textarea-bordered w-full"
               placeholder="কারণ / মন্তব্য"
@@ -96,7 +107,7 @@ const FeeUpdateModal = ({ isOpen, onClose, student }) => {
               বাতিল
             </button>
             <button type="submit" className="btn btn-sm btn-primary">
-              সংরক্ষণ
+              পরিবর্তন
             </button>
           </div>
         </form>
