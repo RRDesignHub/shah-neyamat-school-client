@@ -202,24 +202,26 @@ const AllStudentsFees = () => {
                         {/* Due Months Count */}
                         <td className="py-2 px-4 text-center">
                           <span className="badge badge-ghost font-mono">
-                            {stu.dueMonths.length} মাস
+                            {stu?.dueMonths.length || "N/A"}
                           </span>
                         </td>
 
                         {/* Total Due Amount */}
                         <td className="py-2 px-4 text-center text-red-600 font-bold">
-                          {stu.totalDue}৳
+                          {stu?.totalDue || 0}৳
                         </td>
 
-                        {/* Session */}
+                        {/* Last Payment Date */}
                         <td className="py-2 px-4 text-center">
-                          {stu?.lastPaidAt ? (
-                            <span className="text-gray-400 text-xs">
-                              {stu?.lastPaidAt}
+                          {stu?.lastPaidAt &&
+                          stu?.lastPaidAt !== "No Payment Found" ? (
+                            <span className="text-gray-700 font-medium">
+                              {/* স্ট্যান্ডার্ড ফরম্যাট: 12 Jan 2026 */}
+                              {format(new Date(stu?.lastPaidAt), "dd MMM yyyy")}
                             </span>
                           ) : (
-                            <span className="text-gray-400 text-xs">
-                              কোন রেকর্ড নেই
+                            <span className="text-red-400 text-xs italic">
+                              N/A
                             </span>
                           )}
                         </td>

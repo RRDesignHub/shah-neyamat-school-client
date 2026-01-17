@@ -3,14 +3,13 @@ import { useAxiosSec } from "../../../Hooks/useAxiosSec";
 import Swal from "sweetalert2";
 
 const FeeUpdateModal = ({ isOpen, onClose, student, refetch }) => {
-  const axiosSec = useAxiosSec;
+  const axiosSec = useAxiosSec();
   const [monthlyFee, setMonthlyFee] = useState("");
   const [note, setNote] = useState("");
 
   useEffect(() => {
     if (student) {
       setMonthlyFee(student.monthlyFee || "");
-      setPreviousDue("");
       setNote("");
     }
   }, [student]);
