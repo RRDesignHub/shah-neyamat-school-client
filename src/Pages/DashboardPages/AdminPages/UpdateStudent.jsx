@@ -10,6 +10,7 @@ import imageUpload from "../../../Api/Utils";
 export default function UpdateStudent() {
   const { id } = useParams();
   const axiosSecure = useAxiosSec();
+  const [isPosted, setIsPosted] = useState(false);
   const navigate = useNavigate();
   const [imageFile, setImageFile] = useState(null);
   const [imgErr, setImgErr] = useState("");
@@ -37,6 +38,7 @@ export default function UpdateStudent() {
     if (imageFile && imageFile?.size >= 40000) return;
 
     try {
+      setIsPosted(true);
       let photoURL = data.image;
       if (imageFile) {
         photoURL = await imageUpload(imageFile);
@@ -57,7 +59,7 @@ export default function UpdateStudent() {
 
       const { data: response } = await axiosSecure.patch(
         `/update-student/${id}`,
-        finalData
+        finalData,
       );
 
       if (response.modifiedCount > 0) {
@@ -76,6 +78,8 @@ export default function UpdateStudent() {
         title: "আপডেট ব্যর্থ হয়েছে",
         text: err.response?.data?.message || "সার্ভারে সমস্যা হয়েছে",
       });
+    } finally {
+      setIsPosted(false);
     }
   };
 
@@ -287,7 +291,7 @@ export default function UpdateStudent() {
                     <option key={group} value={group}>
                       {group}
                     </option>
-                  )
+                  ),
                 )}
               </select>
             </div>
@@ -426,8 +430,18 @@ export default function UpdateStudent() {
           </div>
 
           <div className="form-control w-fit ms-auto mt-6">
-            <button className="btn bg-green-600 px-5 hover:bg-green-700 md:text-lg text-white">
-              Update Student's Data
+            <button
+              disabled={isPosted}
+              className="btn bg-green-600 px-5 hover:bg-green-700 md:text-lg text-white"
+            >
+              {isPosted ? (
+                <>
+                  <span className="loading loading-spinner loading-sm"></span>
+                  সেভ হচ্ছে...
+                </>
+              ) : (
+                <>Update Student's Data</>
+              )}
             </button>
           </div>
         </form>

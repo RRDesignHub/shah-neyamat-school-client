@@ -6,6 +6,7 @@ import imageUpload from "../../../Api/Utils";
 import useAuth from "../../../Hooks/useAuth";
 export const AddStudent = () => {
   const axiosSecure = useAxiosSec();
+  const [isPosted, setIsPosted] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [largeFile, setLargeFile] = useState(null);
   const { register, handleSubmit, reset, control } = useForm({
@@ -42,6 +43,7 @@ export const AddStudent = () => {
     }
 
     try {
+      setIsPosted(true);
       // image file upload to imageBB:
       let photoURL;
       if (imageFile) {
@@ -59,7 +61,7 @@ export const AddStudent = () => {
 
       const { data: response } = await axiosSecure.post(
         `/add-student`,
-        studentData
+        studentData,
       );
 
       if (response?.message) {
@@ -84,6 +86,15 @@ export const AddStudent = () => {
       }
     } catch (err) {
       console.log("Student data adding Error-->", err);
+      Swal.fire({
+        icon: "error",
+        title: "দুঃখিত!",
+        text: "তথ্যটি সংরক্ষণ করা সম্ভব হয়নি। আবার চেষ্টা করুন।",
+        confirmButtonText: "ঠিক আছে",
+        confirmButtonColor: "#166534",
+      });
+    } finally {
+      setIsPosted(false);
     }
   };
 
@@ -290,7 +301,7 @@ export const AddStudent = () => {
                     <option key={group} value={group}>
                       {group}
                     </option>
-                  )
+                  ),
                 )}
               </select>
             </div>
@@ -415,9 +426,18 @@ export const AddStudent = () => {
           <div className="form-control w-fit flex-row gap-2 md:gap-4 ms-auto mt-6">
             <button
               type="submit"
-              className="btn bg-green-600 px-5 hover:bg-green-700 md:text-lg text-white"
+              disabled={isPosted}
+              className={`btn bg-green-600 text-white py-3 px-5 rounded-lg font-bold md:text-lg flex items-center justify-center gap-2 transition shadow-lg 
+    ${isPosted ? "bg-gray-400 cursor-not-allowed" : "bg-[#166534] hover:bg-green-800"}`}
             >
-              শিক্ষার্থীর তথ্য যোগ করুন
+              {isPosted ? (
+                <>
+                  <span className="loading loading-spinner loading-sm"></span>
+                  সেভ হচ্ছে...
+                </>
+              ) : (
+                <>শিক্ষার্থীর তথ্য যোগ করুন</>
+              )}
             </button>
           </div>
         </form>

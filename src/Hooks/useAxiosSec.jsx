@@ -21,7 +21,7 @@ export const useAxiosSec = () => {
       },
       (err) => {
         return Promise.reject(err);
-      }
+      },
     );
 
     // interseptor stop user for 401 and 403 status and logoutUser and navigate to login:
@@ -36,7 +36,7 @@ export const useAxiosSec = () => {
           navigate("/login");
         }
         return Promise.reject(error);
-      }
+      },
     );
   }, [logoutUser, navigate]);
 
