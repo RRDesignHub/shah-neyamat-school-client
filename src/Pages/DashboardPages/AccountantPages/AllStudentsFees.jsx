@@ -172,7 +172,7 @@ const AllStudentsFees = () => {
                   dues.length > 0 &&
                   dues
                     .sort(
-                      (a, b) => parseInt(a.classRoll) - parseInt(b.classRoll)
+                      (a, b) => parseInt(a.classRoll) - parseInt(b.classRoll),
                     )
                     .map((stu) => (
                       <tr
@@ -236,7 +236,7 @@ const AllStudentsFees = () => {
                           </button>
 
                           <Link
-                            to={`/dashboard/student-payment-history/${stu._id}`}
+                            to={`/dashboard/student-payment-history/${stu.studentID}?session=${stu.session}`}
                           >
                             <button className="btn btn-xs bg-gray-600 text-white hover:bg-gray-700 border-none">
                               বিবরণী
