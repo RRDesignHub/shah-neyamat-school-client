@@ -26,7 +26,6 @@ export const AddStudent = () => {
       religion: "Islam",
       mobileNo: "",
       admissionFee: 700,
-      previousDue: 0,
     },
   });
   useEffect(() => {
@@ -56,7 +55,6 @@ export const AddStudent = () => {
         classRoll: data.classRoll.toString(),
         mobileNo: parseInt(data.mobileNo),
         admissionFee: parseInt(data?.admissionFee),
-        previousDue: parseInt(data?.previousDue),
       };
 
       const { data: response } = await axiosSecure.post(
@@ -397,27 +395,6 @@ export const AddStudent = () => {
               <label className="label">
                 <span className="label-text-alt text-[10px] text-gray-500">
                   নোট: শিক্ষার্থীর ভর্তি ফি। না থাকলে খালি রাখুন।
-                </span>
-              </label>
-            </div>
-
-            {/* Previous Due */}
-            <div className="form-control col-span-12 md:col-span-6">
-              <label className="label">
-                <span className="label-text max-sm:text-xs">
-                  পূর্ববর্তী বকেয়া (Previous Due):
-                </span>
-              </label>
-              <input
-                type="number"
-                min={0}
-                {...register("previousDue")}
-                placeholder="পূর্ববর্তী বকেয়া লিখুন (যদি থাকে)..."
-                className="input input-bordered"
-              />
-              <label className="label">
-                <span className="label-text-alt text-[10px] text-gray-500">
-                  নোট: পূর্বের কোনো বকেয়া থাকলে এখানে লিখুন।
                 </span>
               </label>
             </div>
