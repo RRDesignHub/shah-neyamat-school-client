@@ -1,14 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { FaFilePdf, FaUserEdit } from "react-icons/fa";
+import { FaFilePdf, FaPrint, FaUserEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import { useAxiosSec } from "../../Hooks/useAxiosSec";
 import { useRole } from "../../Hooks/useRole";
 import { Loading } from "../../components/Shared/Loading";
-import TabularStudentInfoPDF from "../../components/Dashboard/TabularStudentsPDF/TabularStudentsPDF";
+import StudentIDCardPDF from "../../components/Dashboard/TabularStudentsPDF/StudentIDCardPDF";
+import { PDFViewer } from "@react-pdf/renderer";
+
 export default function AllStudents() {
   const axiosSecure = useAxiosSec();
   const [userRole] = useRole();
@@ -36,7 +38,7 @@ export default function AllStudents() {
     ],
     queryFn: async () => {
       const { data } = await axiosSecure.get(
-        `/students?session=${session}&className=${filterByClass}&sectionName=${filterBySection}&studentID=${filterStudentsID}`
+        `/students?session=${session}&className=${filterByClass}&sectionName=${filterBySection}&studentID=${filterStudentsID}`,
       );
       if (data?.message) {
         setServerError(data.message);
@@ -268,7 +270,7 @@ export default function AllStudents() {
                           {student?.dateOfBirth &&
                             format(
                               new Date(student?.dateOfBirth),
-                              "MMMM dd, yyyy"
+                              "MMMM dd, yyyy",
                             )}
                         </td>
 
@@ -315,18 +317,23 @@ export default function AllStudents() {
         )}
       </div>
 
-      {/* table modal for all students result marksheet pdf */}
-      {/* pdf popup */}
+      {/* --- ID Card Print Modal --- */}
       {isTableModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-center items-center">
-          <div className="bg-white w-[90%] h-[90%] rounded shadow-lg relative">
-            <button
-              onClick={closeTablePdfModal}
-              className="absolute bottom-2 right-8 text-lg bg-red-500 text-white px-4 py-2 rounded"
-            >
-              Close
-            </button>
-            <TabularStudentInfoPDF students={students} />
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center p-4">
+          <div className="bg-white w-full h-[90vh] rounded-lg overflow-hidden flex flex-col">
+            <div className="p-4 border-b flex justify-between bg-slate-50">
+              <h2 className="font-bold">PDF Preview</h2>
+              <button
+                onClick={closeTablePdfModal}
+                className="btn btn-error btn-sm text-white"
+              >
+                Close
+              </button>
+            </div>
+
+            <PDFViewer width="100%" height="100%">
+              <StudentIDCardPDF students={students} />
+            </PDFViewer>
           </div>
         </div>
       )}

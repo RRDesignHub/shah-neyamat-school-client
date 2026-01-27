@@ -36,176 +36,235 @@ import AllStudentsFees from "../Pages/DashboardPages/AccountantPages/AllStudents
 import StuPaymentHistory from "../Pages/DashboardPages/AccountantPages/StuPaymentHistory";
 import AddExamFee from "../Pages/DashboardPages/AccountantPages/AddExamFee";
 import ClientResult from "../Pages/ClientResult";
-import AddAllStudents from "../Pages/DashboardPages/AccountantPages/AddAllStudents";
 import Management from "../Pages/Management";
 import SpecialTask from "../Pages/DashboardPages/AdminPages/SpecialTask";
 import DailyOfficeInOut from "../Pages/DashboardPages/AccountantPages/DailyOfficeInOut";
 import OfficeLedgerStatement from "../Pages/DashboardPages/AccountantPages/OfficeLedgerStatement";
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: <MainLayout></MainLayout>,
-      errorElement:<ErrorPage></ErrorPage>,
-      children:[
-        {
-          path: '/',
-          element: <Home></Home>
-        },
-        {
-          path: '/all-notice',
-          element: <Notices />,
-        },
-        {
-          path: '/teachers',
-          element: <Teachers />,
-        },
-        {
-          path: '/management',
-          element: <Management />,
-        },
-        {
-          path: '/students',
-          element: <Students />,
-        },
-        {
-          path: '/client-result',
-          element: <ClientResult />
-        },
-        {
-          path: '/subjects',
-          element: <ClientAllSubjects />
-        },
-        {
-          path: "/teacher-details/:id",
-          element: <TeachersDetails />
-        },
-      ]
-    },
-    {
-      path: 'login',
-      element:<SignIn></SignIn>
-    },
-    {
-      path: "dashboard",
-      element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
-      errorElement:<ErrorPage></ErrorPage>,
-      children: [
-        {
-          index: true,
-          element: <Overview></Overview>
-        },
-        // --------------------------admin routes-----------------------
-         {
-          path: "create-user",
-          element: <AdminRoute><CreateUserPage /></AdminRoute>
-        },
-         {
-          path: "all-user",
-          element: <AdminRoute><AllUsers /></AdminRoute>
-        },
-         {
-          path: "special-task",
-          element: <SpecialTask />
-        },
-         {
-          path: "update-user/:id",
-          element: <AdminRoute><UpdateUser /></AdminRoute>
-        },
-        {
-          path: "add-notice",
-          element: <AdminRoute><AddNotice /></AdminRoute>
-        },
-        {
-          path: "update-student/:id",
-          element: <UpdateStudent />
-        },
-        {
-          path: "add-subjects",
-          element: <AdminRoute><AddSubject /></AdminRoute>
-        },
-        {
-          path: "add-admit-card",
-          element: <AdminRoute><CreateAdmitCard /></AdminRoute>
-        },
-        {
-          path: "subjects",
-          element: <AdminRoute><AllSubjects /></AdminRoute>
-        },
-        {
-          path: "add-teacher",
-          element: <AdminRoute><AddTeacher /></AdminRoute>
-        },
-        {
-          path: "all-teacher",
-          element: <AdminRoute><AllTeachers /></AdminRoute>
-        },
-        // --------------------teachers routes--------------------
-        {
-          path: "add-student",
-          element: <TeacherRoute><AddStudent></AddStudent></TeacherRoute>
-        },
-       
-        {
-          path: "add-result",
-          element: <TeacherRoute><AddResult></AddResult></TeacherRoute>
-        },
-
-        // accountant routes
-        {
-          path: "daily-inout",
-          element: <AccountantRoute><DailyOfficeInOut /></AccountantRoute>
-        },
-        {
-          path: "ledger-statement",
-          element: <AccountantRoute><OfficeLedgerStatement /></AccountantRoute>
-        }, 
-        {
-          path: "students-fees",
-          element: <AccountantRoute><AllStudentsFees /></AccountantRoute>
-        },
-         {
-          path: "student-payment-history/:id",
-          element: <AccountantRoute><StuPaymentHistory /></AccountantRoute>
-        },
-         {
-          path: "add-exam-fee",
-          element: <AccountantRoute><AddExamFee /></AccountantRoute>
-        },
-
-        {
-          path: "all-students-fees",
-          element: <AccountantRoute><AddAllStudents /></AccountantRoute>
-        },
-
-        // all user routes
-        {
-          path: "students",
-          element: <AllStudents></AllStudents>
-        },
-         
-        {
-          path: "class-admit-cards",
-          element: <ClassAdmitCard />
-        },
-        
-        {
-          path: "dashboard-results",
-          element: <Results></Results>
-        },
-        {
-          path: "result/:id",
-          element: <ResultPDF />
-        },
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainLayout></MainLayout>,
+    errorElement: <ErrorPage></ErrorPage>,
+    children: [
       {
-          path: "student-details/:id",
-          element: <StudentDetails />
-        },
-        
-      ]
-    }
-  ]
-)
+        path: "/",
+        element: <Home></Home>,
+      },
+      {
+        path: "/all-notice",
+        element: <Notices />,
+      },
+      {
+        path: "/teachers",
+        element: <Teachers />,
+      },
+      {
+        path: "/management",
+        element: <Management />,
+      },
+      {
+        path: "/students",
+        element: <Students />,
+      },
+      {
+        path: "/client-result",
+        element: <ClientResult />,
+      },
+      {
+        path: "/subjects",
+        element: <ClientAllSubjects />,
+      },
+      {
+        path: "/teacher-details/:id",
+        element: <TeachersDetails />,
+      },
+    ],
+  },
+  {
+    path: "login",
+    element: <SignIn></SignIn>,
+  },
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <Dashboard></Dashboard>
+      </PrivateRoute>
+    ),
+    errorElement: <ErrorPage></ErrorPage>,
+    children: [
+      {
+        index: true,
+        element: <Overview></Overview>,
+      },
+      // --------------------------admin routes-----------------------
+      {
+        path: "create-user",
+        element: (
+          <AdminRoute>
+            <CreateUserPage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "all-user",
+        element: (
+          <AdminRoute>
+            <AllUsers />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "special-task",
+        element: <SpecialTask />,
+      },
+      {
+        path: "update-user/:id",
+        element: (
+          <AdminRoute>
+            <UpdateUser />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "add-notice",
+        element: (
+          <AdminRoute>
+            <AddNotice />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "update-student/:id",
+        element: <UpdateStudent />,
+      },
+      {
+        path: "add-subjects",
+        element: (
+          <AdminRoute>
+            <AddSubject />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "add-admit-card",
+        element: (
+          <AdminRoute>
+            <CreateAdmitCard />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "subjects",
+        element: (
+          <AdminRoute>
+            <AllSubjects />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "add-teacher",
+        element: (
+          <AdminRoute>
+            <AddTeacher />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "all-teacher",
+        element: (
+          <AdminRoute>
+            <AllTeachers />
+          </AdminRoute>
+        ),
+      },
+      // --------------------teachers routes--------------------
+      {
+        path: "add-student",
+        element: (
+          <TeacherRoute>
+            <AddStudent></AddStudent>
+          </TeacherRoute>
+        ),
+      },
+
+      {
+        path: "add-result",
+        element: (
+          <TeacherRoute>
+            <AddResult></AddResult>
+          </TeacherRoute>
+        ),
+      },
+
+      // accountant routes
+      {
+        path: "daily-inout",
+        element: (
+          <AccountantRoute>
+            <DailyOfficeInOut />
+          </AccountantRoute>
+        ),
+      },
+      {
+        path: "ledger-statement",
+        element: (
+          <AccountantRoute>
+            <OfficeLedgerStatement />
+          </AccountantRoute>
+        ),
+      },
+      {
+        path: "students-fees",
+        element: (
+          <AccountantRoute>
+            <AllStudentsFees />
+          </AccountantRoute>
+        ),
+      },
+      {
+        path: "student-payment-history/:id",
+        element: (
+          <AccountantRoute>
+            <StuPaymentHistory />
+          </AccountantRoute>
+        ),
+      },
+      {
+        path: "add-exam-fee",
+        element: (
+          <AccountantRoute>
+            <AddExamFee />
+          </AccountantRoute>
+        ),
+      },
+
+      // all user routes
+      {
+        path: "students",
+        element: <AllStudents></AllStudents>,
+      },
+
+      {
+        path: "class-admit-cards",
+        element: <ClassAdmitCard />,
+      },
+
+      {
+        path: "dashboard-results",
+        element: <Results></Results>,
+      },
+      {
+        path: "result/:id",
+        element: <ResultPDF />,
+      },
+      {
+        path: "student-details/:id",
+        element: <StudentDetails />,
+      },
+    ],
+  },
+]);
 
 export default router;
