@@ -12,7 +12,7 @@ const chunkArray = (array, size) => {
 };
 
 const StudentIDCardPDF = ({ students }) => {
-  const pages = chunkArray(students, 12);
+  const pages = chunkArray(students, 9);
 
   return (
     <Document>
@@ -30,7 +30,7 @@ const StudentIDCardPDF = ({ students }) => {
 
                 {/* BODY */}
                 <View style={styles.content}>
-                  {/* PHOTO */}
+                  {/* PHOTO SECTION */}
                   <View style={styles.photoSection}>
                     <Image
                       src={
@@ -48,45 +48,68 @@ const StudentIDCardPDF = ({ students }) => {
                   {/* NAME */}
                   <Text style={styles.nameText}>{student.studentName}</Text>
 
-                  {/* CLASS & ROLL */}
-                  <View style={styles.detailRow}>
-                    <Text style={styles.textSm}>
-                      <Text style={styles.label}>Class: </Text>
-                      {student.className}
-                    </Text>
-                    <Text style={styles.textSm}>
-                      <Text style={styles.label}>Roll: </Text>
-                      {student.classRoll}
-                    </Text>
-                  </View>
+                  {/* TWO COLUMN LAYOUT */}
+                  <View style={styles.twoColumnRow}>
+                    {/* LEFT COLUMN */}
+                    <View style={styles.leftColumn}>
+                      <View style={styles.infoRow}>
+                        <Text style={styles.label}>Class:</Text>
+                        <Text style={styles.value}>
+                          {student.className || "—"}
+                        </Text>
+                      </View>
 
-                  {/* DOB & BLOOD */}
-                  <View style={styles.detailRow}>
-                    <Text style={styles.textSm}>
-                      <Text style={styles.label}>DOB: </Text>
-                      {student.dateOfBirth
-                        ? new Date(student.dateOfBirth).toLocaleDateString(
-                            "en-GB",
-                          )
-                        : "—"}
-                    </Text>
-                    <Text style={styles.textSm}>
-                      <Text style={styles.label}>B: </Text>
-                      {student.bloodGroup || "—"}
-                    </Text>
-                  </View>
+                      <View style={styles.infoRow}>
+                        <Text style={styles.label}>DOB:</Text>
+                        <Text style={styles.value}>
+                          {student.dateOfBirth
+                            ? new Date(student.dateOfBirth).toLocaleDateString(
+                                "en-GB",
+                              )
+                            : "—"}
+                        </Text>
+                      </View>
+                    </View>
 
-                  {/* MOBILE */}
-                  <View style={styles.mobileBox}>
-                    <Text style={styles.mobileText}>
-                      Mob: 0{student.mobileNo}
-                    </Text>
+                    {/* RIGHT COLUMN */}
+                    <View style={styles.rightColumn}>
+                      <View style={styles.infoRow}>
+                        <Text style={styles.label}>Roll:</Text>
+                        <Text style={styles.value}>
+                          {student.classRoll || "—"}
+                        </Text>
+                      </View>
+
+                      <View style={styles.infoRow}>
+                        <Text style={styles.label}>Blood:</Text>
+                        <Text style={styles.value}>
+                          {student.bloodGroup || "—"}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
                 </View>
+                {/* footer text */}
 
-                {/* FOOTER */}
-                <View style={styles.footer}>
-                  <Text>Principal's Signature</Text>
+                <View style={styles.footerText}>
+                  <Text style={styles.footerLabel}>Father's Name:</Text>
+                  <Text style={styles.footerValue}>
+                    {student.fatherName || "—"}
+                  </Text>
+                </View>
+
+                <View style={styles.footerText}>
+                  <Text style={styles.footerLabel}>Mother's Name:</Text>
+                  <Text style={styles.footerValue}>
+                    {student.motherName || "—"}
+                  </Text>
+                </View>
+
+                <View style={styles.footerText}>
+                  <Text style={styles.footerLabel}>Mobile No:</Text>
+                  <Text style={styles.footerValue}>
+                    {student.mobileNo ? `0${student.mobileNo}` : "—"}
+                  </Text>
                 </View>
               </View>
             ))}

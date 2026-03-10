@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { FaFilePdf, FaPrint, FaUserEdit } from "react-icons/fa";
+import { FaFilePdf, FaUserEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
@@ -19,8 +19,7 @@ export default function AllStudents() {
   const [session, setSession] = useState(new Date().getFullYear());
   const [filterStudentsID, setFilterStudentsID] = useState("");
   const [filterBySection, setFilterBySection] = useState("");
-  const [enabled, setUnabled] = useState(false);
-  const { isTeacher, isAccountant, isAdmin } = userRole;
+  const { isTeacher, isAdmin } = userRole;
   const [isTableModalOpen, setIsTableModalOpen] = useState(false);
 
   // all students data fro admin and teachers dashboard

@@ -25,14 +25,16 @@ export const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 6,
+    rowGap: 14,
+    columnGap: 6,
   },
 
+  // Main Card Styles
   card: {
     width: "32.3%", // exactly 3 per row
-    height: 180,
+    height: 220, // Slightly increased height for new content
     border: "1.2pt solid #166534",
-    borderRadius: 6,
+    borderRadius: 4,
     overflow: "hidden",
     flexDirection: "column",
     backgroundColor: "#ffffff",
@@ -52,20 +54,22 @@ export const styles = StyleSheet.create({
   },
 
   content: {
-    padding: 6,
+    paddingTop: 3,
+    paddingLeft: 6,
+    paddingRight: 6,
     flexDirection: "column",
     alignItems: "center",
-    flexGrow: 1,
+    marginBottom: 6,
   },
 
   photoSection: {
-    marginBottom: 5,
+    marginBottom: 4,
     alignItems: "center",
   },
 
   image: {
-    width: 48,
-    height: 55,
+    width: 50,
+    height: 56,
     border: "0.8pt solid #16a34a",
     borderRadius: 2,
   },
@@ -79,58 +83,82 @@ export const styles = StyleSheet.create({
   },
 
   sidText: {
-    fontSize: 7,
+    fontSize: 9,
     fontWeight: "bold",
     color: "#166534",
   },
 
   nameText: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: "bold",
     color: "#064e3b",
-    marginBottom: 4,
+    marginBottom: 5,
     textAlign: "center",
+    width: "100%",
   },
 
-  detailRow: {
+  // Two Column Layout
+  twoColumnRow: {
+    borderTop: "1px solid #dcfce7",
+    display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    paddingVertical: 4,
     width: "100%",
-    marginBottom: 3,
+    gap: 4,
+    marginTop: 2,
+    borderBottom: "1px solid #dcfce7",
+  },
+
+  leftColumn: {
+    flex: 1,
+    flexDirection: "column",
+    gap: 1,
+  },
+
+  rightColumn: {
+    flex: 1,
+    flexDirection: "column",
+    gap: 1,
+  },
+
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "80%",
+    paddingHorizontal: 2,
   },
 
   label: {
-    fontSize: 7,
+    fontSize: 9,
     fontWeight: "bold",
     color: "#166534",
+    width: "35%",
   },
 
-  textSm: {
-    fontSize: 7,
+  value: {
+    fontSize: 9,
     color: "#334155",
+    width: "60%",
+    textAlign: "right",
   },
-
-  mobileBox: {
-    marginTop: 4,
-    backgroundColor: "#f0fdf4",
-    paddingVertical: 2,
-    paddingHorizontal: 6,
-    borderRadius: 3,
+  footerText: {
+    marginBottom: 3,
+    marginLeft: 5,
+    textAlign: "left",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
   },
-
-  mobileText: {
-    fontSize: 8,
+  footerLabel: {
+    fontSize: 9,
     fontWeight: "bold",
     color: "#166534",
-    textAlign: "center",
   },
-
-  footer: {
-    borderTop: "0.6pt dashed #94a3b8",
-    paddingVertical: 3,
-    textAlign: "center",
-    fontSize: 6,
-    color: "#64748b",
-    backgroundColor: "#f8fafc",
+  footerValue: {
+    fontSize: 9,
+    color: "#334155",
   },
 });
